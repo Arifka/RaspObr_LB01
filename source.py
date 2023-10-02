@@ -3,7 +3,7 @@ import math
 import cv2 as cv
 from matplotlib import pyplot as plt
 
-img_name = '123'
+img_name = '2'
 img = cv.imread(img_name + '.jpg')
 assert img is not None, "file could not be read, check with os.path.exists()"
 # Task 1
@@ -99,6 +99,7 @@ print("End of Task 2")
 
 # Task 3.1 GammaCor
 # Colorized
+plt.figure("Histogram of britghtness after gamma correction")
 new_img_gammaCorr = np.zeros(new_img_compressed.shape, new_img_compressed.dtype)
 coef_c = 1.55
 coef_gamma = 2
@@ -106,6 +107,13 @@ for y in range(new_img_compressed.shape[0]):
    for x in range(new_img_compressed.shape[1]):
       for c in range(new_img_compressed.shape[2]):
          new_img_gammaCorr[y, x, c] = 255 * coef_c * (new_img_compressed[y, x, c]/255) ** coef_gamma
+# Histogram of brightness
+plt.subplot(211)
+for i,col in enumerate(color):
+   histr = cv.calcHist([new_img_gammaCorr],[i],None,[256],[0,256])
+   plt.plot(histr,color = col)
+   plt.xlim([0,256])
+
 cv.imwrite(img_name + '_gammaCorr' + '.jpg', new_img_gammaCorr)
 # Grayscale
 new_grayscale_img_gammaCorr = np.zeros(new_grayscale_img_compressed.shape, new_grayscale_img_compressed.dtype)
@@ -113,7 +121,11 @@ for y in range(new_grayscale_img_compressed.shape[0]):
    for x in range(new_grayscale_img_compressed.shape[1]):
       new_grayscale_img_gammaCorr[y, x] = 255 * coef_c * (new_grayscale_img_compressed[y, x] / 255) ** coef_gamma
 cv.imwrite(img_name + '_gray' + '_gammaCorr' + '.jpg', new_grayscale_img_gammaCorr)
-
+# Histogram of brightness
+plt.subplot(212)
+histr = cv.calcHist([new_grayscale_img_gammaCorr], [0], None, [256], [0,256])
+plt.plot(histr)
+plt.xlim([0, 256])
 # Task 3.2 Logarithm
 # Colorized
 new_img_logCorr = np.zeros(new_img_compressed.shape, new_img_compressed.dtype)
@@ -121,12 +133,24 @@ for y in range(new_img_compressed.shape[0]):
    for x in range(new_img_compressed.shape[1]):
       for c in range(new_img_compressed.shape[2]):
          new_img_logCorr[y, x, c] = 255 * coef_c * math.log((new_img_compressed[y, x, c] / 255) + 1)
+# Histograms of brightness
+plt.figure("Histograms of brightness after logarithm correction")
+plt.subplot(211)
+for i,col in enumerate(color):
+   histr = cv.calcHist([new_img_logCorr],[i],None,[256],[0,256])
+   plt.plot(histr,color = col)
+   plt.xlim([0,256])
 cv.imwrite(img_name + '_logCorr' + '.jpg', new_img_logCorr)
 # Grayscale
 new_grayscale_img_logCorr = np.zeros(new_grayscale_img_compressed.shape, new_grayscale_img_compressed.dtype)
 for y in range(new_grayscale_img_compressed.shape[0]):
    for x in range(new_grayscale_img_compressed.shape[1]):
       new_grayscale_img_logCorr[y, x] = 255 * coef_c * math.log((new_grayscale_img_compressed[y, x] / 255) + 1)
+# Histograms
+plt.subplot(212)
+histr = cv.calcHist([new_grayscale_img_logCorr], [0], None, [256], [0,256])
+plt.plot(histr)
+plt.xlim([0, 256])
 cv.imwrite(img_name + '_gray' + '_logCorr' + '.jpg', new_grayscale_img_logCorr)
 
 plt.tight_layout()
