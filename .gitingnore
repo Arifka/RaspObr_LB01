@@ -1,1 +1,5 @@
-*.jpg
+*_compressed.jpg
+*_gammaCorr.jpg
+*_linCorr.jpg
+*_logCorr.jpg
+*_gray.jpg
