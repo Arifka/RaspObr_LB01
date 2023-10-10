@@ -1,7 +1,17 @@
 import cv2 as cv
 from matplotlib import pyplot as plt
 
-def create_plot(flag: bool, img): #Тип изображения: 0 - BRG, 1 - GrayScale
+def get_plot(name: str, img, grayscale_img):
+    plot = plt
+    plot.figure(name)
+    plot.subplot(211)
+    plot = create_histograms(0, img)
+    plot.subplot(212)
+    plot = create_histograms(1, grayscale_img)
+    plot.tight_layout()
+    return plot
+
+def create_histograms(flag: bool, img): #Тип изображения: 0 - BRG, 1 - GrayScale
     match flag:
         case 0:
             color = ('b','g','r')
@@ -14,3 +24,5 @@ def create_plot(flag: bool, img): #Тип изображения: 0 - BRG, 1 - G
             plt.plot(histr)
             plt.xlim([0, 256])
     return plt
+
+
