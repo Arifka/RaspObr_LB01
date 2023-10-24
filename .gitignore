@@ -5,3 +5,4 @@
 *_gray.jpg
 __pycache__
 .vscode
+.mypy_cache
