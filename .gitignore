@@ -3,3 +3,6 @@
 *_linCorr.jpg
 *_logCorr.jpg
 *_gray.jpg
+__pycache__
+.vscode
+.mypy_cache
